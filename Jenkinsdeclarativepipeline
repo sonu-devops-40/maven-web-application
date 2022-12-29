@@ -20,7 +20,6 @@ pipeline{
                 git credentialsId: 'f39798bd-8dbb-4b53-9928-bcf2c8c9844f', url: 'https://github.com/sonu-devops-40/maven-web-application.git'
             }
         }
-        /*
     stage('Build')
     {
         steps{
@@ -47,7 +46,6 @@ pipeline{
          sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.3.90:/opt/apache-tomcat-9.0.70/webapps"
         }
         }
-        */
     }
    }
    
