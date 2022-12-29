@@ -20,6 +20,7 @@ pipeline{
                 git credentialsId: 'f39798bd-8dbb-4b53-9928-bcf2c8c9844f', url: 'https://github.com/sonu-devops-40/maven-web-application.git'
             }
         }
+        /*
     stage('Build')
     {
         steps{
@@ -48,6 +49,7 @@ pipeline{
         }
     }
    }
+   */
    post {
   success {
     // One or more steps need to be included within each condition's block.
