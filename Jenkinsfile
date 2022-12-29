@@ -8,7 +8,7 @@ node{
     echo "Node Name is: ${env.NODE_NAME}"
     echo "Job Name is: ${env.JOB_NAME}"
     try {
-    sendSlackNotification(STARTED)
+    sendSlackNotification('STARTED')
     stage('Checkoutcode')
     {
         git credentialsId: 'f39798bd-8dbb-4b53-9928-bcf2c8c9844f', url: 'https://github.com/sonu-devops-40/maven-web-application.git'
