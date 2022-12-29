@@ -16,6 +16,7 @@ pipeline{
         stage('Checkout Code')
         {
             steps{
+                sendSlacknotification('STARTED')
                 git credentialsId: 'f39798bd-8dbb-4b53-9928-bcf2c8c9844f', url: 'https://github.com/sonu-devops-40/maven-web-application.git'
             }
         }
@@ -48,25 +49,19 @@ pipeline{
     }
    }
    post {
-  aborted {
-    // One or more steps need to be included within each condition's block.
-  }
   success {
     // One or more steps need to be included within each condition's block.
+    sendSlacknotification('SUCCESS')
   }
   failure {
     // One or more steps need to be included within each condition's block.
-  }catch (e) {
-    // If there was an exception thrown, the build failed
-    currentBuild.result = "FAILED"
-    throw e
-  } finally {
-    // Success or failure, always send notifications
-    sendSlackNotification(currentBuild.result)
+    sendSlacknotification('FAILURE')
   }
 }
 
-def sendSlackNotification(String buildStatus = 'STARTED') {
+} 
+
+def sendSlacknotification(String buildStatus = 'STARTED') {
   // build status of null means successful
   buildStatus =  buildStatus ?: 'SUCCESS'
 
@@ -89,5 +84,5 @@ def sendSlackNotification(String buildStatus = 'STARTED') {
   }
 
   // Send notifications
-  slackSend (color: colorCode, message: summary, channel: 'pipelinedeclarativeway')
+  slackSend (color: colorCode, message: summary,channel:'pipelinedeclarativeway')
 }
