@@ -58,7 +58,8 @@ pipeline{
     // One or more steps need to be included within each condition's block.
   }
 }
-}catch (e) {
+}
+} catch (e) {
     // If there was an exception thrown, the build failed
     currentBuild.result = "FAILED"
     throw e
