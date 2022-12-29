@@ -1,0 +1,50 @@
+pipeline{
+    agent any 
+    tools{
+        maven "maven3.8.6"
+    }
+    triggers 
+    {
+  pollSCM ('* * * * *')
+    }
+    options 
+    {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '5', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+  timestamps()
+   }
+    stages{
+        stage('Checkout Code')
+        {
+            steps{
+                git credentialsId: 'f39798bd-8dbb-4b53-9928-bcf2c8c9844f', url: 'https://github.com/sonu-devops-40/maven-web-application.git'
+            }
+        }
+    stage('Build')
+    {
+        steps{
+            sh "mvn clean package"
+        }
+    }
+    stage('Execute the sonarQube report')
+    {
+        steps{
+            sh " mvn sonar:sonar"
+        }
+    }
+    stage('upload into artifactory repository')
+    {
+        steps{
+            sh " mvn deploy"
+        }
+    }
+    stage('Deploy the application into Tomcat server')
+    {
+        steps{
+             sshagent(['b9da946c-de8d-4e65-8232-fff17fa16727'])
+        {
+         sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.3.90:/opt/apache-tomcat-9.0.70/webapps"
+        }
+        }
+    }
+   }
+}
